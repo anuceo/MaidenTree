@@ -1,0 +1,102 @@
+syntax = "proto3";
+
+package maidentree.auth.v1;
+
+option java_multiple_files = true;
+option java_package = "com.maidentree.auth.v1";
+option go_package = "github.com/maidentree/maidentree/gen/auth/v1;authv1";
+
+service AuthAuditService {
+  // Creates and signs an audit record for a database action.
+  rpc SignAuditRecord(SignAuditRecordRequest) returns (SignAuditRecordResponse);
+
+  // Verifies a previously signed audit record.
+  rpc VerifyAuditRecord(VerifyAuditRecordRequest) returns (VerifyAuditRecordResponse);
+}
+
+message SignAuditRecordRequest {
+  // Identifier of the actor performing the operation.
+  string actor_id = 1;
+
+  // Canonical operation name (for example: INSERT, UPDATE, DELETE, SELECT).
+  string operation = 2;
+
+  // Logical subject identifier for the audited entity.
+  string subject_id = 3;
+
+  // Opaque payload serialized by the caller.
+  bytes payload = 4;
+
+  // UTC timestamp in RFC3339 format.
+  string occurred_at = 5;
+
+  // Key identifier used by the signer.
+  string key_id = 6;
+
+  // Hash algorithm used before signing.
+  HashAlgorithm hash_algorithm = 7;
+
+  // Signature algorithm used by the signer.
+  SignatureAlgorithm signature_algorithm = 8;
+}
+
+message SignAuditRecordResponse {
+  // Structured audit record including generated digest and signature.
+  AuditRecord record = 1;
+}
+
+message VerifyAuditRecordRequest {
+  AuditRecord record = 1;
+
+  // Optional expected signer key id for policy checks.
+  string expected_key_id = 2;
+
+  // Optional trust scope (tenant, environment, etc.).
+  string trust_domain = 3;
+}
+
+message VerifyAuditRecordResponse {
+  bool valid = 1;
+
+  // Diagnostic reason when verification fails.
+  string failure_reason = 2;
+
+  // Derived digest computed during verification.
+  bytes computed_digest = 3;
+}
+
+message AuditRecord {
+  string actor_id = 1;
+  string operation = 2;
+  string subject_id = 3;
+  bytes payload = 4;
+  string occurred_at = 5;
+
+  // Digest over canonicalized record fields.
+  bytes digest = 6;
+  HashAlgorithm hash_algorithm = 7;
+
+  // Detached signature over digest.
+  bytes signature = 8;
+  SignatureAlgorithm signature_algorithm = 9;
+
+  // Signer key identifier.
+  string key_id = 10;
+
+  // RFC3339 timestamp when the signature was produced.
+  string signed_at = 11;
+}
+
+enum HashAlgorithm {
+  HASH_ALGORITHM_UNSPECIFIED = 0;
+  HASH_ALGORITHM_SHA256 = 1;
+  HASH_ALGORITHM_SHA384 = 2;
+  HASH_ALGORITHM_SHA512 = 3;
+}
+
+enum SignatureAlgorithm {
+  SIGNATURE_ALGORITHM_UNSPECIFIED = 0;
+  SIGNATURE_ALGORITHM_ED25519 = 1;
+  SIGNATURE_ALGORITHM_ECDSA_P256_SHA256 = 2;
+  SIGNATURE_ALGORITHM_RSA_PSS_SHA256 = 3;
+}
