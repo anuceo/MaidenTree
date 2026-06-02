@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package maidentree.session;
+
+message Session {
+  string session_id = 1;
+  string glyph_id = 2;
+  string access_level = 3;
+  int64 issued_at_unix = 4;
+  int64 expires_at_unix = 5;
+  bool active = 6;
+}
+
+message SessionRequest {
+  string glyph_id = 1;
+  string access_level = 2;
+}
+
+message SessionCloseRequest {
+  string session_id = 1;
+}
+
+message SessionResponse {
+  Session session = 1;
+}
+
+service SessionService {
+  rpc OpenSession(SessionRequest)
+      returns (SessionResponse);
+
+  rpc CloseSession(SessionCloseRequest)
+      returns (SessionResponse);
+}

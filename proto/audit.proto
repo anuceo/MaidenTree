@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package maidentree.audit;
+
+message AuditRecord {
+  string record_id = 1;
+  string actor_glyph_id = 2;
+  string action = 3;
+  string resource = 4;
+  string trace_id = 5;
+  int64 timestamp_unix = 6;
+  bool success = 7;
+  string reason = 8;
+}
+
+message AuditQuery {
+  string actor_glyph_id = 1;
+  string resource = 2;
+}
+
+message AuditResponse {
+  repeated AuditRecord records = 1;
+}
+
+service AuditService {
+  rpc QueryAudit(AuditQuery)
+      returns (AuditResponse);
+
+  rpc RecordAudit(AuditRecord)
+      returns (AuditRecord);
+}

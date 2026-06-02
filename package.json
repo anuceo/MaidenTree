@@ -1,0 +1,27 @@
+{
+  "name": "maidentree",
+  "version": "1.0.0",
+  "description": "Julia Based Database experiment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate:proto": "protoc -I proto --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=generated auth.proto glyph.proto trace.proto entropy.proto session.proto vault.proto ledger.proto audit.proto"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anuceo/MaidenTree.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anuceo/MaidenTree/issues"
+  },
+  "homepage": "https://github.com/anuceo/MaidenTree#readme",
+  "devDependencies": {
+    "ts-proto": "^2.11.8"
+  },
+  "dependencies": {
+    "@bufbuild/protobuf": "^2.12.0"
+  }
+}

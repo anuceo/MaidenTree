@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package maidentree.ledger;
+
+message LedgerEntry {
+  string entry_id = 1;
+  string glyph_id = 2;
+  string operation = 3;
+  string amount = 4;
+  int64 sequence = 5;
+  string previous_hash = 6;
+  string entry_hash = 7;
+  int64 recorded_at_unix = 8;
+}
+
+message LedgerAppendRequest {
+  LedgerEntry entry = 1;
+}
+
+message LedgerResponse {
+  bool accepted = 1;
+  string reason = 2;
+  LedgerEntry entry = 3;
+}
+
+service LedgerService {
+  rpc AppendEntry(LedgerAppendRequest)
+      returns (LedgerResponse);
+}
