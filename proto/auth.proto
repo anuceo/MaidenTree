@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package maidentree.auth;
+
+message GlyphAuthRequest {
+  string glyph_id = 1;
+  string combo = 2;
+  string powerball = 3;
+  string qma_seed = 4;
+  string qchash = 5;
+}
+
+message AuthResponse {
+  bool valid = 1;
+  string reason = 2;
+  string access_level = 3;
+}
+
+service GlyphAuthService {
+  rpc ValidateGlyph(GlyphAuthRequest)
+      returns (AuthResponse);
+}

@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package maidentree.entropy;
+
+message EntropySample {
+  string glyph_id = 1;
+  string qma_seed = 2;
+  string qchash = 3;
+  double entropy_score = 4;
+  int64 sampled_at_unix = 5;
+}
+
+message EntropyRequest {
+  string glyph_id = 1;
+  string qma_seed = 2;
+}
+
+message EntropyResponse {
+  bool accepted = 1;
+  string reason = 2;
+  EntropySample sample = 3;
+}
+
+service EntropyService {
+  rpc EvaluateEntropy(EntropyRequest)
+      returns (EntropyResponse);
+}

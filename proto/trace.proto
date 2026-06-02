@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package maidentree.trace;
+
+message TraceEvent {
+  string trace_id = 1;
+  string glyph_id = 2;
+  string action = 3;
+  string source = 4;
+  int64 timestamp_unix = 5;
+  map<string, string> metadata = 6;
+}
+
+message TraceRequest {
+  string trace_id = 1;
+}
+
+message TraceResponse {
+  repeated TraceEvent events = 1;
+}
+
+service TraceService {
+  rpc GetTrace(TraceRequest)
+      returns (TraceResponse);
+
+  rpc RecordTrace(TraceEvent)
+      returns (TraceEvent);
+}

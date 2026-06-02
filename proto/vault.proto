@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package maidentree.vault;
+
+message VaultEntry {
+  string entry_id = 1;
+  string glyph_id = 2;
+  string key = 3;
+  string value = 4;
+  int64 version = 5;
+}
+
+message VaultRequest {
+  string entry_id = 1;
+  string glyph_id = 2;
+}
+
+message VaultResponse {
+  bool found = 1;
+  VaultEntry entry = 2;
+}
+
+service VaultService {
+  rpc ReadVaultEntry(VaultRequest)
+      returns (VaultResponse);
+
+  rpc WriteVaultEntry(VaultEntry)
+      returns (VaultResponse);
+}
