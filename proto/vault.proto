@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package maidentree.vault;
+
+message VaultSeed {
+  string seed_id = 1;
+  string glyph_id = 2;
+  bytes encrypted_seed = 3;
+}
+
+message VaultMountRequest {
+  string glyph_id = 1;
+  bool dry_run = 2;
+}
+
+message VaultMountResponse {
+  bool mounted = 1;
+  string mount_path = 2;
+}
+
+message VaultDecryptRequest {
+  string seed_id = 1;
+}
+
+message VaultDecryptResponse {
+  bool success = 1;
+  bytes decrypted_seed = 2;
+}
+
+service VaultService {
+
+  rpc MountVault(VaultMountRequest)
+      returns (VaultMountResponse);
+
+  rpc DecryptSeed(VaultDecryptRequest)
+      returns (VaultDecryptResponse);
+}
