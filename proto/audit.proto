@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package maidentree.audit;
+
+message AuditSignature {
+
+  string export_id = 1;
+
+  string trajectory_hash = 2;
+
+  string qchash = 3;
+
+  string glyph_id = 4;
+
+  string symmetry_code = 5;
+
+  string icosahedral_class = 6;
+
+  uint32 epoch_count = 7;
+
+  uint32 node_count = 8;
+
+  double avg_entropy = 9;
+
+  double avg_entanglement = 10;
+
+  uint32 anomaly_count = 11;
+
+  uint32 disjunction_count = 12;
+
+  string created_at = 13;
+
+  string signature_version = 14;
+}
+
+message AuditVerificationRequest {
+  AuditSignature signature = 1;
+}
+
+message AuditVerificationResponse {
+  bool valid = 1;
+  string reason = 2;
+}
+
+service AuditService {
+
+  rpc VerifyAudit(
+      AuditVerificationRequest
+  ) returns (
+      AuditVerificationResponse
+  );
+}

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package maidentree.glyph;
+
+message GlyphMetadata {
+  string glyph_id = 1;
+  string name = 2;
+  string symbol = 3;
+  string type = 4;
+  string description = 5;
+  string created_at = 6;
+}
+
+message GlyphLookupRequest {
+  string glyph_id = 1;
+}
+
+message GlyphResponse {
+  GlyphMetadata glyph = 1;
+}
+
+service GlyphService {
+  rpc GetGlyph(GlyphLookupRequest)
+      returns (GlyphResponse);
+}

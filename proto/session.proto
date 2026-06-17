@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package maidentree.session;
+
+message Session {
+  string session_id = 1;
+  string glyph_id = 2;
+  string created_at = 3;
+  string expires_at = 4;
+}
+
+message BurnRequest {
+  string session_id = 1;
+}
+
+message BurnResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+service SessionService {
+
+  rpc CreateSession(Session)
+      returns (Session);
+
+  rpc BurnSession(BurnRequest)
+      returns (BurnResponse);
+}
