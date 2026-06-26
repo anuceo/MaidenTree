@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package maidentree.trace;
+
+message TraceNode {
+  string node_id = 1;
+  string parent_id = 2;
+  string epoch_id = 3;
+  double entropy = 4;
+  double stability = 5;
+}
+
+message TraceEdge {
+  string source = 1;
+  string target = 2;
+  double weight = 3;
+}
+
+message TraceRecord {
+  string trace_id = 1;
+  repeated TraceNode nodes = 2;
+  repeated TraceEdge edges = 3;
+}
+
+message TraceRequest {
+  string trace_id = 1;
+}
+
+service TraceService {
+  rpc StoreTrace(TraceRecord)
+      returns (TraceRequest);
+
+  rpc GetTrace(TraceRequest)
+      returns (TraceRecord);
+}

@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package maidentree.entropy;
+
+message EpochMetric {
+  string epoch_id = 1;
+
+  double avg_entropy = 2;
+  double min_entropy = 3;
+  double max_entropy = 4;
+
+  double avg_stability = 5;
+
+  double avg_entanglement = 6;
+
+  int32 anomaly_count = 7;
+  int32 disjunction_count = 8;
+}
+
+message EntropyReport {
+  string report_id = 1;
+  repeated EpochMetric epochs = 2;
+}
+
+service EntropyService {
+  rpc SubmitReport(EntropyReport)
+      returns (EntropyReport);
+
+  rpc GetReport(EntropyReport)
+      returns (EntropyReport);
+}
